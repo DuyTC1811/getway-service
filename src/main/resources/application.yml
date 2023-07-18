@@ -1,0 +1,28 @@
+server:
+  port: 8888
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://192.168.0.188:8761/eureka}
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true         # truy cập thông qua bằng tên service lower-case
+
+      routes:
+        - id: user-info
+          uri: lb://userinfo
+          predicates:
+            - Path=/api/**
+
+
+
