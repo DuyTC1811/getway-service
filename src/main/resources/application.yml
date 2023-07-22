@@ -19,28 +19,22 @@ spring:
   main:
     web-application-type: reactive
   application:
-    name: gateway
+    name: GATEWAY
+
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true         # truy cập thông qua bằng tên service lower-case
-
       routes:
         - id: user-info
-          uri: lb://userinfo
+          uri: lb://USERINFO
           predicates:
-            - Path=/api/**
+            - Path=/api/user/**
           filters:
             - AuthenticationFilter
 
         - id: security
-          uri: lb://security
+          uri: lb://SECURITY
           predicates:
-            - Path=/api/**
-          filters:
-            - AuthenticationFilter
+            - Path=/api/security/**
 
 logging:
   level:
