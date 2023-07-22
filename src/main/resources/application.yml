@@ -1,14 +1,23 @@
 server:
   port: 8888
+#  http2:
+#    enabled: true
+#  ssl:
+#    key-store: classpath:keystore.p12
+#    key-store-password: anhduy12
+#    key-password: anhduy12
+#    enabled: true
 
 eureka:
   instance:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: ${EUREKA_URL:http://192.168.0.188:8761/eureka}
+      defaultZone: http://localhost:8761/eureka
 
 spring:
+  main:
+    web-application-type: reactive
   application:
     name: gateway
   cloud:
@@ -23,6 +32,22 @@ spring:
           uri: lb://userinfo
           predicates:
             - Path=/api/**
+          filters:
+            - AuthenticationFilter
+
+        - id: security
+          uri: lb://security
+          predicates:
+            - Path=/api/**
+          filters:
+            - AuthenticationFilter
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+jwt:
+  jwtSecret: DUY-TC
 
 
 
