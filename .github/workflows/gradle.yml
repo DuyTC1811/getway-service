@@ -24,9 +24,14 @@ jobs:
           java-version: '11'
           distribution: 'corretto'
 
-      - name: Build with Gradle | Build and Push Docker Image
+      - name: Run build with Gradle Wrapper
         run: |
+          echo "gpr.user=${{ secrets.GITHUD_USER }}" >> gradle.properties
+          echo "gpr.key=${{ secrets.GITHUD_TOKEN }}" >> gradle.properties
           ./gradlew clean build --exclude-task test
+
+      - name: Build and Push Docker Image
+        run: |
           docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
           docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/getway-service:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/getway-service:latest
