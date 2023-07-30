@@ -12,7 +12,6 @@ java {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven {
         url = uri("https://maven.pkg.github.com/DuyTC1811/common")
